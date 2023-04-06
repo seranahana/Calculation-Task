@@ -1,4 +1,5 @@
-﻿global using CalcTask.WebAPI.Library.Providers;
+﻿global using CalcTask.WebAPI.Library;
+global using CalcTask.WebAPI.Library.Providers;
 global using CalcTask.WebAPI.Library.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;

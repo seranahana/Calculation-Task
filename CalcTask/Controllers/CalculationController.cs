@@ -70,6 +70,45 @@ namespace CalcTask.WebAPI.Controllers
             }
         }
 
+        [Route("expression")]
+        [HttpGet]
+        [ProducesResponseType(typeof(double), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+        public IActionResult EvaluateExpression([FromQuery, Required] string expression)
+        {
+            if (string.IsNullOrWhiteSpace(expression))
+                return BadRequest(_messagesProvider.GetMissingParameterErrorMessage(Params.Expression));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                double result = _calculationService.EvaluateExpression(expression);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                if (ex.ParamName == nameof(Params.Expression))
+                    return BadRequest(ex.Message);
+                else
+                {
+                    _logger.Fatal(ex, ex.GetType().ToString());
+                    return Problem(_messagesProvider.GetInternalServerErrorMessage());
+                }
+
+            }
+            catch (OverflowException)
+            {
+                return BadRequest(_messagesProvider.GetInvalidResultErrorMessage());
+            }
+            catch (Exception ex)
+            {
+                _logger.Fatal(ex, ex.GetType().ToString());
+                return Problem(_messagesProvider.GetInternalServerErrorMessage());
+            }
+        }
+
         [Route("multiply")]
         [HttpGet]
         [ProducesResponseType(typeof(double), StatusCodes.Status200OK)]

@@ -14,5 +14,15 @@
         {
             return InvalidResultErrorMessage;
         }
+
+        public string GetMissingParameterErrorMessage(Params missingParam)
+        {
+            string missingParamName = Constants.ParamNames[missingParam];
+
+            if (missingParamName is not null)
+                return $"The {missingParamName} parameter is missing.";
+
+            return "Some of parameters are missing";
+        }
     }
 }

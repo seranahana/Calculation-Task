@@ -4,5 +4,6 @@
     {
         string GetInternalServerErrorMessage();
         string GetInvalidResultErrorMessage();
+        string GetMissingParameterErrorMessage(Params missingParam);
     }
 }

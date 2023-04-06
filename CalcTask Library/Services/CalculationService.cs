@@ -1,7 +1,11 @@
-﻿namespace CalcTask.WebAPI.Library.Services
+﻿using CalcTask.WebAPI.Library.Evaluation;
+using System.Data;
+
+namespace CalcTask.WebAPI.Library.Services
 {
     public class CalculationService : ICalculationService
     {
+
         public double Add(double value, double addend)
         {
             double s = value + addend;
@@ -16,6 +20,11 @@
             if (double.IsInfinity(s) || double.IsNaN(s))
                 throw new OverflowException();
             return s;
+        }
+
+        public double EvaluateExpression(string expression)
+        {
+            return ExpressionEvaluator.Evaluate(expression);
         }
 
         public double Multiply(double value, double multiplier)
