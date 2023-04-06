@@ -1,4 +1,5 @@
-﻿global using CalcTask.WebAPI.Library.Services;
+﻿global using CalcTask.WebAPI.Library.Providers;
+global using CalcTask.WebAPI.Library.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,6 +38,7 @@ namespace CalcTask.WebAPI
                 });
 
             services.AddScoped<ICalculationService, CalculationService>();
+            services.AddScoped<IMessagesProvider, DefaultMessagesProvider>();
 
             services.AddSingleton(logger);
 
