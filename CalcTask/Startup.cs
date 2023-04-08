@@ -31,6 +31,19 @@ namespace CalcTask.WebAPI
         {
             services.AddControllers(options => options.SuppressAsyncSuffixInActionNames = false);
 
+            if (_hostEnv.IsDevelopment())
+            {
+                services.AddCors(options =>
+                {
+                    options.AddDefaultPolicy(builder =>
+                    {
+                        builder.WithOrigins("http://localhost:3000")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+                });
+            }
+
             services.AddHttpClient(name: "CalcTask_API",
                 configureClient: options =>
                 {
@@ -61,7 +74,10 @@ namespace CalcTask.WebAPI
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "CalcTask_Web_API v1");
                     c.SupportedSubmitMethods(new[] { SubmitMethod.Get, SubmitMethod.Put, SubmitMethod.Post, SubmitMethod.Delete, SubmitMethod.Patch });
                 });
+
+                app.UseCors();
             }
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
